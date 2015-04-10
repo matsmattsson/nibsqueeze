@@ -21,11 +21,14 @@
 @interface MMNibArchiveObjectEncoding : NSObject
 @property (readonly, nonatomic, strong) MMNibArchive *archive;
 @property (readonly, nonatomic) NSUInteger objectIndex;
-@property (readonly, nonatomic) NSArray *values;
+@property (readonly, nonatomic, readonly) NSArray *values;
 
 @end
 
 @implementation MMNibArchiveObjectEncoding
+@synthesize archive = _archive;
+@synthesize objectIndex = _objectIndex;
+
 - (instancetype)initWithObjectAtIndex:(NSUInteger)objectIndex inNibArchive:(MMNibArchive *)archive {
 	self = [super init];
 	if (self) {

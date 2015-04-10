@@ -39,7 +39,7 @@
 	return self;
 }
 
-- (instancetype)copyWithZone:(NSZone *)zone {
+- (instancetype)copyWithZone:(NSZone * MM_UNUSED)zone {
 	return [[[self class] alloc] initWithName:m_name integers:m_integers];
 }
 

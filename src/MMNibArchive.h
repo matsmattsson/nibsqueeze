@@ -16,46 +16,11 @@
 
 #import <Foundation/Foundation.h>
 
+#import "MMNibArchiveTypes.h"
 #import "MMNibArchiveClassName.h"
 #import "MMNibArchiveObject.h"
 #import "MMNibArchiveValue.h"
 
-enum MMNibArchiveValueType {
-	kMMNibArchiveValueTypeUInt8 = 0,
-	kMMNibArchiveValueTypeUInt16 = 1,
-	kMMNibArchiveValueTypeUInt32 = 2,
-	kMMNibArchiveValueTypeUInt64 = 3,
-	kMMNibArchiveValueTypeTrue = 4,
-	kMMNibArchiveValueTypeFalse = 5,
-	kMMNibArchiveValueTypeFloat = 6,
-	kMMNibArchiveValueTypeDouble = 7,
-	kMMNibArchiveValueTypeData = 8,
-	kMMNibArchiveValueTypeNil = 9,
-	kMMNibArchiveValueTypeObjectReference = 10,
-};
-
-enum MMNibArchiveHeaderValues {
-	kMMNibArchiveHeaderMajorVersion = 1,
-	kMMNibArchiveHeaderMinorVersion = 9,
-};
-
-enum MMNibArchiveErrorCode {
-	kMMNibArchiveSuccess = 0,
-	kMMNibArchiveErrorInvalidHeader,
-	kMMNibArchiveErrorInvalidData,
-	kMMNibArchiveErrorObjectReadClassNameIndex,
-	kMMNibArchiveErrorObjectReadValuesOffset,
-	kMMNibArchiveErrorObjectReadValuesCount,
-	kMMNibArchiveErrorObjectInvalidClassNameIndex,
-	kMMNibArchiveErrorObjectInvalidValuesOffset,
-	kMMNibArchiveErrorObjectInvalidValuesCount,
-	kMMNibArchiveErrorObjectInvalidClass,
-	kMMNibArchiveErrorValueReadKeyIndex,
-	kMMNibArchiveErrorValueReadType,
-	kMMNibArchiveErrorValueInvalidKeyIndex,
-	kMMNibArchiveErrorValueInvalidObjectReference,
-	kMMNibArchiveErrorKeyInvalidClass,
-};
 
 extern NSString * const MMNibArchiveErrorDomain;
 

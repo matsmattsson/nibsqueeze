@@ -3,6 +3,8 @@
 
 all: bin/nibsqueeze
 
+CFLAGWARNINGS=-Werror -Wall -Weverything -pedantic -Wno-direct-ivar-access -Wno-padded -Wno-cstring-format-directive
+
 HEADERS = src/DeduplicateConstantObjects.h \
           src/DeduplicateValueInstances.h \
           src/MergeEqualObjects.h \
@@ -11,6 +13,7 @@ HEADERS = src/DeduplicateConstantObjects.h \
           src/MMNibArchive.h \
           src/MMNibArchiveClassName.h \
           src/MMNibArchiveObject.h \
+          src/MMNibArchiveTypes.h \
           src/MMNibArchiveValue.h \
           src/StripUnusedClassNames.h \
           src/StripUnusedValues.h
@@ -31,7 +34,7 @@ bin:
 	mkdir -p bin
 
 bin/nibsqueeze: bin Makefile $(HEADERS) $(SOURCES)
-	$(CC) -o $@ -framework Foundation -Werror -fno-objc-arc -Os $(CFLAGS) $(SOURCES)
+	$(CC) -o $@ -framework Foundation -fno-objc-arc -Os $(CFLAGWARNINGS) $(CFLAGS) $(SOURCES)
 
 clean:
 	rm bin/nibsqueeze || true

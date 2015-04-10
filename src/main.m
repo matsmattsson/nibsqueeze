@@ -47,9 +47,9 @@
 
 
 @interface MMNibDataContainer : NSObject
-@property (strong) NSString *path;
-@property (strong) NSData *originalData;
-@property (strong) NSData *updatedData;
+@property (nonatomic, strong) NSString *path;
+@property (nonatomic, strong) NSData *originalData;
+@property (nonatomic, strong) NSData *updatedData;
 @end
 
 enum OptionValue {
@@ -105,8 +105,6 @@ enum LogLevel {
 static int GlobalLogLevel = kLogLevelDefault;
 
 #define LOG_LEVEL_printf( logLevel__, ...) ((GlobalLogLevel >= (logLevel__)) ? printf(__VA_ARGS__) : 0)
-#define LOG_LEVEL_fprintf( logLevel__, ...) ((GlobalLogLevel >= (logLevel__)) ? fprintf(__VA_ARGS__) : 0)
-
 #define LOG_DEBUG_printf( ... ) LOG_LEVEL_printf( kLogLevelDebug, PRINT_DEBUG_PREFIX __VA_ARGS__ )
 #define LOG_VERBOSE1_RAW_printf( ... ) LOG_LEVEL_printf( kLogLevelDebug, __VA_ARGS__ )
 #define LOG_WARNING_printf( ... ) fprintf(stderr, PRINT_WARNING_PREFIX __VA_ARGS__ )
@@ -114,7 +112,7 @@ static int GlobalLogLevel = kLogLevelDefault;
 
 static MMNibArchive *smallerNibArchiveForOptions(MMNibArchive *archive, enum OptionValue const *settings);
 
-enum OptionValue const DefaultOptionValues[] = {
+static enum OptionValue const DefaultOptionValues[] = {
 	[kOptionEverything] = kOptionUnset,
 	[kOptionDeduplicateConstantObjects] = kOptionEnabled,
 	[kOptionMergeEqualObjects] = kOptionDisabled,
@@ -230,7 +228,7 @@ static void mergeOptions(enum OptionValue const oldValues[], enum OptionValue co
 
 static void printHelpText(const char * helpText) {
 	size_t maxLineLength = 60;
-	struct winsize terminal_size = { 0 };
+	struct winsize terminal_size = { .ws_col = 0 };
 	if (-1 != ioctl(STDOUT_FILENO, TIOCGWINSZ, &terminal_size)) {
 		if (20 <= terminal_size.ws_col) {
 			maxLineLength = terminal_size.ws_col - 8;
@@ -254,7 +252,7 @@ static void printHelpText(const char * helpText) {
 	}
 }
 
-void writeCompletedNibFiles(dispatch_semaphore_t dispatchSemaphore, NSMutableDictionary *nibFileResults) {
+static void writeCompletedNibFiles(dispatch_semaphore_t dispatchSemaphore, NSMutableDictionary *nibFileResults) {
 	NSDictionary *nibFileResultsCopy = nil;
 	long const semaphore_wait_result = dispatch_semaphore_wait(dispatchSemaphore, DISPATCH_TIME_FOREVER);
 	assert(0 == semaphore_wait_result);
@@ -280,7 +278,7 @@ void writeCompletedNibFiles(dispatch_semaphore_t dispatchSemaphore, NSMutableDic
 	MM_release(nibFileResultsCopy);
 }
 
-MMNibArchive *smallerEmbeddedNibArchivesForOptions(MMNibArchive *archive, enum OptionValue const *settings) {
+static MMNibArchive *smallerEmbeddedNibArchivesForOptions(MMNibArchive *archive, enum OptionValue const *settings) {
 	BOOL hasNibDataKey = NO;
 	NSArray *keys = archive.keys;
 	NSUInteger const numberOfKeys = keys.count;
@@ -602,7 +600,7 @@ int main(int argc, char **argv) {
 
 				for (NSString * const nibPath in fileList) {
 					NSError *nibReadError = nil;
-					NSData *nibData = [NSData dataWithContentsOfFile:nibPath options:0 error:&nibReadError];
+					NSData *nibData = [NSData dataWithContentsOfFile:nibPath options:(NSDataReadingOptions)0 error:&nibReadError];
 					if (nibData) {
 						dispatch_group_async(dispatchGroup, dispatchQueue, ^{
 							MMNibDataContainer *container = [[MMNibDataContainer alloc] init];
@@ -658,6 +656,10 @@ int main(int argc, char **argv) {
 }
 
 @implementation MMNibDataContainer
+@synthesize path = _path;
+@synthesize originalData = _originalData;
+@synthesize updatedData = _updatedData;
+
 - (void)dealloc {
 	MM_release(_path);
 	MM_release(_originalData);

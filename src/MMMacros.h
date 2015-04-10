@@ -19,6 +19,10 @@
 
 #define ARRAY_ELEMENT_COUNT( a__ ) (sizeof(a__) / sizeof((a__)[0]))
 
+#if __clang__
+#define MM_UNUSED __attribute__((unused))
+#endif
+
 #if __OBJC__
 
 #if __has_feature(objc_arc)
@@ -35,5 +39,9 @@
 
 
 #endif /* __OBJC__ */
+
+#ifndef MM_UNUSED
+#define MM_UNUSED
+#endif
 
 #endif

@@ -24,7 +24,7 @@ static const char *EmptyKeys[] = {
 	"UINibEncoderEmptyKey",
 };
 
-NSArray *ObjectValueSets(MMNibArchive *archive) {
+static NSArray *ObjectValueSets(MMNibArchive *archive) {
 	NSMutableArray *valueSets = [NSMutableArray arrayWithCapacity:archive.objects.count];
 
 	NSMutableSet *emptyKeys = [NSMutableSet set];
@@ -56,7 +56,7 @@ NSArray *ObjectValueSets(MMNibArchive *archive) {
 	return valueSets;
 }
 
-NSUInteger NumberOfObjectsInIntersection(NSSet *setA, NSSet *setB) {
+static NSUInteger NumberOfObjectsInIntersection(NSSet *setA, NSSet *setB) {
 	if (setA.count > setB.count) {
 		NSSet *t = setA;
 		setA = setB;
@@ -231,11 +231,11 @@ static void FindValueCodingForObjectsAtIndexes(const NSUInteger * const indexPer
 	MM_release(orderedSetsOfValues);
 }
 
-void FindGoodClusterOrderingByHeuristic1(NSSet *const cluster, NSUInteger const numberOfObjectsInCluster, NSUInteger const *intersectionCount, NSUInteger const numberOfObjects, NSUInteger *indexPermutation) {
-	NSUInteger i = 0;
+static void FindGoodClusterOrderingByHeuristic1(NSSet *const cluster, NSUInteger const numberOfObjectsInCluster, NSUInteger const *intersectionCount, NSUInteger const numberOfObjects, NSUInteger *indexPermutation) {
+	NSUInteger clusterIndex = 0;
 	for (NSNumber *number in cluster) {
-		indexPermutation[i] = [number unsignedIntegerValue];
-		++i;
+		indexPermutation[clusterIndex] = [number unsignedIntegerValue];
+		++clusterIndex;
 	}
 
 	NSUInteger maxIntersectionCount = 0;
@@ -514,3 +514,4 @@ MMNibArchive * MergeValues(MMNibArchive *archive) {
 
 	return result;
 }
+

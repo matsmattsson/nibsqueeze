@@ -58,7 +58,7 @@ BOOL MMNibArchiveReadVarLengthInteger(const uint8_t * const bytes, const size_t 
 			const size_t validBits = ~(size_t)0 >> shiftAmount;
 			const BOOL hasInvalidBits = (0 != (~validBits & digit));
 			if (!hasInvalidBits) {
-				result = result | (digit << shiftAmount);
+				result = result | ((size_t)digit << shiftAmount);
 				success = isLastDigit;
 			}
 		}
@@ -389,7 +389,7 @@ static void validateNibArchiveValueList(const uint8_t * const bytes, const size_
 				size_t valueLength = 0;
 				uint8_t type = bytes[offset]; ++offset;
 
-				switch((enum MMNibArchiveValueType)type) {
+				switch(type) {
 					case kMMNibArchiveValueTypeUInt8: {
 						valueLength = sizeof(uint8_t) / sizeof(uint8_t);
 					} break;
@@ -477,7 +477,7 @@ static NSArray *nibArchiveValueList(const uint8_t * const bytes, const size_t nu
 			uint8_t type = bytes[offset]; ++offset;
 			const size_t valueOffsetStart = offset;
 
-			switch((enum MMNibArchiveValueType)type) {
+			switch(type) {
 				case kMMNibArchiveValueTypeUInt8: {
 					valueLength = sizeof(uint8_t) / sizeof(uint8_t);
 				} break;
@@ -546,8 +546,8 @@ static NSData *serializeNibArchiveValuesList(NSArray *values) {
 	for (MMNibArchiveValue *value in values) {
 		const NSUInteger keyIndex = value.keyIndex;
 		const uint8_t type;
-		NSData *const data = value.data;
-		const NSUInteger valueLength = [data length];
+		NSData *const valueData = value.data;
+		const NSUInteger valueLength = [valueData length];
 
 		const size_t encodedKeyIndexSize = MMNibArchiveSerializedLengthForInteger(keyIndex);
 
@@ -948,12 +948,30 @@ static NSData *serializeNibArchiveClassNameList(NSArray *classNames) {
 			}
 
 			switch (value.type) {
+				case kMMNibArchiveValueTypeUInt8: {
+				} break;
+				case kMMNibArchiveValueTypeUInt16: {
+				} break;
+				case kMMNibArchiveValueTypeUInt32: {
+				} break;
+				case kMMNibArchiveValueTypeUInt64: {
+				} break;
+				case kMMNibArchiveValueTypeTrue: {
+				} break;
+				case kMMNibArchiveValueTypeFalse: {
+				} break;
+				case kMMNibArchiveValueTypeFloat: {
+				} break;
+				case kMMNibArchiveValueTypeDouble: {
+				} break;
+				case kMMNibArchiveValueTypeData: {
+				} break;
+				case kMMNibArchiveValueTypeNil: {
+				} break;
 				case kMMNibArchiveValueTypeObjectReference: {
 					if (!error && !(value.objectReference < numberOfObjects)) {
 						error = [NSError errorWithDomain:MMNibArchiveErrorDomain code:kMMNibArchiveErrorValueInvalidObjectReference userInfo:nil];
 					}
-				} break;
-				default: {
 				} break;
 			}
 		}

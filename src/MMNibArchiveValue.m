@@ -101,7 +101,7 @@
 }
 
 
-- (instancetype)copyWithZone:(NSZone *)zone {
+- (instancetype)copyWithZone:(NSZone * MM_UNUSED)zone {
 	return [[[self class] alloc] initWithData:m_data ofType:m_type forKeyIndex:m_keyIndex];
 }
 
